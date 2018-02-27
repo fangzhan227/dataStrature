@@ -313,6 +313,7 @@ echo "栈的长度为: ".$stack->getSize()."<br>";
  * PHP SPL标准库（Standard PHP Library）是用于解决典型问题的一组接口与类的集合 （oop）
  * 双链表是一种重要的线性存储结构，对于双链表中的每个节点，不仅仅存储自己的信息，
  * 还要保存前驱和后继节点的地址。SPL中的SplDoublyLinkedList类提供了对双链表的操作。
+ * 
  */
 
 ?>
