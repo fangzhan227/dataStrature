@@ -1,195 +1,8 @@
 <?php
 /*
  * 《大话数据结构》中c语言源码范例对应的php源码
+ * 第四章 栈与队列
  */
-echo "<br><br>1+2+3+....+100 = ：";
-function plus($max)
-{
-	$sum = 0;
-	if($max >= 1){
-		for($i=1; $i<=$max; $i++){
-			$sum += $i;
-		}
-		return $sum;
-	}
-}
-var_dump(plus(100));
-
-
-echo "<br><br> union 并集A=A U B：";
-/*
- * P46示例： 集合A=A U B,把存在集合B 中但并不存在A 中的数据元素插入到A 中
- * strpos: 查找字符串首次出现的位置。
- * strpos($a, $b) !== false：如果$a 中存在 $b，则为 true ，否则为 false。
- * 用 !== false （或者 === false） 的原因是如果 $b 正好位于$a的开始部分，那么该函数会返回int(0)，
- * 那么0是false，但$b确实位于$a中，所以要用 !== 判断一下类型，要确保是严格的 false。
- */
-function union($str_a,$str_b)
-{
-	$arr_b = explode(',',$str_b);
-	foreach($arr_b as $key =>$val){
-		// 注意这里使用的是 ===。简单的 == 不能像我们期待的那样工作，
-		// 因为 '1' 是第 0 位置上的（第一个）字符。
-		if(strpos($str_a, $val )=== false)
-		{
-			$str_new_a = $str_a.",".$val;
-		}
-	}
-	return $str_new_a;
-	
-}
-
-$str_a = '1,2,3,5,6,7,8,9';
-$str_b = '1,0,2,4,10';
-
-var_dump(union($str_a,$str_b));
-
-
-/*
- * P52示例： 
- * http://blog.51cto.com/noican/1598290
- * 线性表：即零个或多个数据元素的有限序列。
- * 线性表的数据结构:即数据元素依此存储在一段地址连续的存储单元内。在高级语言中就表现为数组。
- *
- * 1. DestroyList: 销毁顺序线性表
- * 2. ClearList: 将线性表重置为空
- * 3. ListEmpty: 判断线性表是否为空
- * 4. ListLength: 返回线性表的长度
- * 5. GetElem: 返回线性表中第$index个数据元素
- * 6. LocateElem: 返回给定的数据元素在线性表中的位置
- * 7. PriorElem: 返回指定元素的前一个元素
- * 8. NextElem: 返回指定元素的后一个元素
- * 9. ListInsert: 在第index的位置插入元素elem
- * 10. ListDelete: 删除第index位置的元素elem
- *
- */
- 
-class SeqStoreList {
-    public $SqArr; 
-    public static  $length;
-    public function __construct($SqArr){
-        $this->SqArr = $SqArr;
-        self::$length=count($SqArr);
-    }
-     
-    //销毁顺序线性表
-    public  function DestroyList(){
-        $this->SqArr=null;
-        self::$length=0;
-    }
- 
-    //将线性表重置为空
-    public  function ClearList(){
-        $this->SqArr=array();
-        self::$length=0;
-    }
-     
-    //判断线性表是否为空
-    public  function ListEmpty(){
-        if(self::$length==0){
-            return 'Is null';
-        }else{
-            return 'Not null';
-        }
-    }
- 
-    //返回线性表的长度
-    public function ListLength(){
-        return self::$length;
-    }
- 
-    //返回线性表中第$index个数据元素
-    public function GetElem($index){
-        if(self::$length==0 || $index<1 || $index>self::$length){
-            return 'ERROR';
-        }
-        return $this->SqArr[$index-1];
-    }
- 
-    //返回给定的数据元素在线性表中的位置
-    public function LocateElem($elem){
-        for($i=0;$i<self::$length;$i++){
-            if($this->SqArr[$i] == $elem){
-                break;
-            }
-        }
-        if($i>=self::$length){
-            return 'ERROR';
-        }
-//        echo $i+1;
-        return $i+1;
-    }
- 
-    //返回指定元素的前一个元素
-    public function PriorElem($cur_elem){
-        for($i=0;$i<self::$length;$i++){
-            if($this->SqArr[$i] == $cur_elem){
-                break;
-            }
-        }
-        if($i==0 || $i>=self::$length){
-            return 'ERROR';
-        }
-        return $this->SqArr[$i-1];
-    }
- 
-    //返回指定元素的后一个元素
-    public function NextElem($cur_elem){
-        for($i=0;$i<self::$length;$i++){
-            if($this->SqArr[$i] == $cur_elem){
-                break;
-            }
-        }
-        if($i>=self::$length-1){
-            return 'ERROR';
-        }
-        return $this->SqArr[$i+1];
-    }
- 
-    //在第index的位置插入元素elem
-    public function ListInsert($index, $elem){
-        if($index<1 || $index>self::$length+1){
-        return 'ERROR';
-        }
-        if($index<=self::$length){
-            for($i=self::$length-1;$i>=$index-1;$i--){
-                $this->SqArr[$i+1]=$this->SqArr[$i];
-            }
-        }
-        $this->SqArr[$index-1]=$elem; //将新元素插入
-        self::$length++;
-//         var_dump($this->SqArr);
-        return 'ok';
-    }
- 
-    //ListDelete: 删除第index位置的元素elem
-    public function ListDelete($index){
-        if($index<1 || $index>self::$length+1){
-            return 'ERROR';
-        }
-        if($index < self::$length){
-            for($i=$index; $i<self::$length; $i++){	 //将删除位置后继元素前移
-                $this->SqArr[$i-1] = $this->SqArr[$i];
-            }
-        }
-        self::$length--;
-//        var_dump($this->SqArr[$index-1]);
-        return $this->SqArr[$index-1];
-    }
-}
-
-$SArr = array("a","b","c","d"); //array('a','a','a','a') ;
-$linearList = new SeqStoreList($SArr);
-
-
-echo "<br><br> php实现数据结构线性表:";
-
- //返回给定的数据元素在线性表中的位置
-echo "<br> - 返回给定的数据元素在线性表中的位置: ".$linearList->LocateElem('d');
-
-echo "<br> - 在第index的位置插入元素elem: ".$linearList->ListInsert(2,'A');
-
-echo "<br> - 删除第index位置的元素elem: ".$linearList->ListDelete(2);
 
 /*
  * php数组出栈入栈
@@ -307,7 +120,6 @@ echo "此时的栈顶元素: ".$stack->getTop()."<br>";
 
 echo "栈的长度为: ".$stack->getSize()."<br>";
 
-
 /*
  * https://www.cnblogs.com/yafang/p/5872187.html
  * PHP SPL标准库（Standard PHP Library）是用于解决典型问题的一组接口与类的集合 （oop）
@@ -315,6 +127,181 @@ echo "栈的长度为: ".$stack->getSize()."<br>";
  * 还要保存前驱和后继节点的地址。SPL中的SplDoublyLinkedList类提供了对双链表的操作。
  * 
  */
+
+
+/*
+ * P102 迭代和递归   打印出前20位的斐波那契数列数:1 1 2 3 5 8 13 21 34 55 …
+ * 概念： 前两个值都为1，该数列从第三位开始，每一位都是当前位前两位的和 
+ * 规律公式为： Fn = F(n-1) + F(n+1) 
+ * F：指当前这个数列 ， n：指数列的下标
+ * 参考http://blog.csdn.net/echo_xiaomo/article/details/52837699
+ */
+/*非递归写法 迭代*/
+function fb_list($n){ //$n:传入数列中数字的个数
+	if($n<=0){
+		return 0;
+	}
+	$array[1] = $array[2] =1;
+	for($i=3; $i<=$n; $i++){
+		$array[$i] = $array[$i-1] +$array[$i-2] ;
+	}
+	return $array;
+}
+echo "<br/>打印出前20位的斐波那契数列数: <br/>非递归写法（迭代） <br/>";
+print_r(fb_list(20));
+
+/*递归写法*/
+function recursion($n){
+	if($n<=0){
+		return 0;
+	}
+	if($n == 1 || $n == 2){
+		return 1;
+	}
+	if($n > 2){
+		return recursion($n - 1)+recursion($n - 2);
+	}
+}
+
+//循环显示         
+for($i=1; $i<=20; $i++) {
+  $str .= ','.recursion($i);
+}    
+$str = substr($str,1);
+echo "<br/>递归写法<br/>". $str;
+
+
+
+/**
+*队列的链式存储和队列的基本操作
+*1.初始化队列
+*2.链队列的入队操作
+*3.链队列的出队操作
+*4.仅返回队列中的全部元素
+*5.返回队列元素个数
+*6.判断队列是否为空
+*7.将所有元素出队列
+*
+*@author xudianyang<>
+*@version $Id:QueueLinked.class.php,v 1.0 2011/02/12 13:05:00 uw Exp
+*@copyright &copy;2011,xudianyang
+**/
+class QLNode{
+ public $mElem=null;
+ public $mNext=null;
+}
+class QueueLinked{
+ //队列“队首指针”
+ public $mFront=null;
+ //队列“队尾指针”
+ public $mRear=null;
+ //队列长度
+ public static $mLength=0;
+ public $mNext=null;
+/**
+*初始化队列
+*
+*@return void
+*/
+ public function __construct(){
+  $this->mFront=$this;
+  $this->mRear=$this;
+  self::$mLength=0;
+  $this->mNext=null;
+ }
+/**
+*链队列的入队操作
+*
+*@param mixed $e 入队新元素值
+*@return void
+*/
+ public function getInsertElem($e){
+  $newLn=new QLNode();
+  $newLn->mElem=$e;
+  $newLn->mNext=null;
+  $this->mRear->mNext=$newLn;
+  $this->mRear=$newLn;
+  self::$mLength++;
+ }
+/**
+*链队列的出队操作
+*
+*@param mixed $e 出队的元素的值保存在此变量中
+*@return boolean 成功返回true,否则返回false
+*/
+ public function getDeleteElem(&$e){
+  if($this->mFront == $this->mRear){
+   return false;
+  }
+  $p=$this->mFront->mNext;
+  $e=$p->mElem;
+  $this->mFront->mNext=$p->mNext;
+  if($p==$this->mRear){
+   $this->mRear=$this->mFront;
+  }
+  self::$mLength--;
+  return true;
+ }
+/**
+*仅返回队列中的全部元素
+*
+*@return array 队列全部元素所组成的一个数组
+*/
+ public function getAllElem(){
+  $qldata=array();
+  if($this->mFront==$this->mRear){
+   return $qldata;
+  }
+  $p=$this->mFront->mNext;
+  while($p!=null){
+   $qldata[]=$p->mElem;
+   $p=$p->mNext;
+  }
+  return $qldata;
+ }
+/**
+*返回队列元素个数
+*
+*@return int 
+*/
+ public function getLength(){
+  return self::$mLength;
+ }
+/**
+*判断队列是否为空
+*
+*@return boolean 为空返回true,否则返回false
+*/
+ public function getIsEmpty(){
+  if($this->mFront == $this->mRear){
+   return true;
+  }else{
+   return false;
+  }
+ }
+/**
+*将所有元素出队列
+*
+*@return array 所有出队列的元素所组成的一个数组
+*/
+ public function getDeleteAllElem(){
+  $qldata=array();
+  if($this->mFront == $this->mRear){
+   return $qldata; 
+  }
+  while($this->mFront->mNext!=null){
+   $qldata[]=$this->mFront->mNext->mElem;
+   $this->mFront->mNext=$this->mFront->mNext->mNext;
+   self::$mLength--;
+  }
+  $this->mFront->mNext=null;
+  $this->mRear=$this->mFront;
+  return $qldata;
+ }
+}
+
+
+
 
 ?>
 
