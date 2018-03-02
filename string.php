@@ -20,3 +20,5 @@ $Str = 'adddee';
 $Tstr ='dde';
 
 echo "<br> 字符串 '".$Tstr."' 在 '".$Str."' 中出现的位置: ".Index ($Str,$Tstr,0)."<br>";
+
+

@@ -1,5 +1,40 @@
 <?php
-echo "冒泡排序算法  降序排列：";
+/*
+ * 《大话数据结构》 第8章
+ *P296 顺序查找:
+ * 在数组a (注意元素值从下标1 开始)中查看有没有关键字k
+ *  a 为数组， n 为要查找的数组个数. key为要查找的关键字*/
+
+$arr = array('1','2','3','4','5','6') ;
+$n = 4;
+$k= '2';
+
+function sequence_search($arr, $n, $k){
+	for($i=1;$i<=$n;$i++){
+		if($arr[$i]==$k){
+			return $i;
+		}
+	}
+	return 0;
+}
+echo "<br><br>顺序查找：".sequence_search($arr, $n, $k )."<br>";
+
+/*P297 顺序查找优化:
+ * 在数组a中 （从数组尾部开始）查找有没有关键字k
+ *  a 为数组， n 为要查找的数组个数. key为要查找的关键字 */
+function sequence_search2($arr, $n, $k){
+	$arr[0] = $k;
+	$i = $n;	//循环从数组尾部开始
+	while($arr[$i] != $k){
+		$i--;
+	}
+	return $i;	//返回0说明查找失败
+}
+
+echo "<br><br>顺序查找优化：".sequence_search2($arr, $n, $k )."<br>";
+
+
+echo "<br><br>冒泡排序算法  降序排列：";
 /**
  *  冒泡排序算法 1:
  *  对需要排序的数组从后往前（逆序）进行多遍的扫描，
@@ -86,7 +121,7 @@ echo "<br><br>二维数组排序：";
  * 二维数组根据字段进行排序
  * @params array $array 需要排序的数组
  * @params string $field 排序的字段
- * @params string $sort 排序顺序标志 SORT_DESC 降序；SORT_ASC 升序
+ * @params string $sort 排序顺序标志 SORT_DESC 降序； SORT_ASC 升序
  */
 function arraySequence($array, $field, $sort = 'SORT_ASC')
 {
@@ -234,8 +269,8 @@ var_dump(insertSort($arr));
 
 echo "<br><br>二分查找：";
 /**
- * 
- * 二分查找（折半查找算法）：
+ *P298 
+ * 二分查找（折半查找算法）：适用于静态查找，一次排序后不再变化的表。
  *  假设数据是按升序排序的，对于给定值x，从序列的中间位置开始比较，
  *  如果当前位置值等于x，则查找成功；
  *  若x小于当前位置值，则在数列的前半段中查找；
